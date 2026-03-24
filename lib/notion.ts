@@ -1,10 +1,29 @@
 import { Client } from "@notionhq/client";
 import type { BlogPost, Project, NotionBlock } from "@/types";
 
-// 初始化 Notion客户端
+// 初始化 Notion 客户端
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
-}) as any;
+});
+
+// 类型断言以绕过 TypeScript 检查
+const notionDB = notion.databases as unknown as {
+  query: (args: {
+    database_id: string;
+    filter?: unknown;
+    sorts?: unknown[];
+  }) => Promise<{ results: unknown[] }>;
+};
+
+const notionBlocks = notion.blocks as unknown as {
+  children: {
+    list: (args: {
+      block_id: string;
+      page_size?: number;
+      start_cursor?: string;
+    }) => Promise<{ results: unknown[]; next_cursor?: string | null }>;
+  };
+};
 
 const BLOG_DB_ID = process.env.NOTION_BLOG_DATABASE_ID!;
 const PROJECTS_DB_ID = process.env.NOTION_PROJECTS_DATABASE_ID!;
@@ -16,7 +35,7 @@ const PROJECTS_DB_ID = process.env.NOTION_PROJECTS_DATABASE_ID!;
  */
 export async function getBlogPosts(): Promise<BlogPost[]> {
   try {
-    const response = await notion.databases.query({
+    const response = await notionDB.query({
       database_id: BLOG_DB_ID,
       filter: {
         property: "Status",
@@ -46,7 +65,7 @@ export async function getBlogPostBySlug(
   slug: string
 ): Promise<BlogPost | null> {
   try {
-    const response = await notion.databases.query({
+    const response = await notionDB.query({
       database_id: BLOG_DB_ID,
       filter: {
         and: [
@@ -88,15 +107,14 @@ export async function getPageBlocks(
     let cursor: string | undefined;
 
     do {
-      const response: unknown = await notion.blocks.children.list({
+      const response = await notionBlocks.children.list({
         block_id: pageId,
         page_size: 100,
         start_cursor: cursor,
       });
 
-      const typedResponse = response as { results: unknown[]; next_cursor?: string };
-      blocks.push(...typedResponse.results.map(parseBlock));
-      cursor = typedResponse.next_cursor;
+      blocks.push(...response.results.map(parseBlock));
+      cursor = response.next_cursor ?? undefined;
     } while (cursor);
 
     return blocks;
@@ -113,7 +131,7 @@ export async function getPageBlocks(
  */
 export async function getProjects(): Promise<Project[]> {
   try {
-    const response = await notion.databases.query({
+    const response = await notionDB.query({
       database_id: PROJECTS_DB_ID,
       sorts: [
         {
@@ -135,7 +153,7 @@ export async function getProjects(): Promise<Project[]> {
  */
 export async function getFeaturedProjects(): Promise<Project[]> {
   try {
-    const response = await notion.databases.query({
+    const response = await notionDB.query({
       database_id: PROJECTS_DB_ID,
       filter: {
         property: "Featured",
