@@ -16,7 +16,7 @@ export function Navbar() {
           href="/"
           className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
         >
-          我的名字
+          袁梦龙
         </Link>
 
         {/* Desktop Nav */}

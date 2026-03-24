@@ -14,7 +14,7 @@ export function Hero() {
 
         {/* Title */}
         <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-          你好，我是<span className="text-blue-600">我的名字</span>
+          你好，我是<span className="text-blue-600">袁梦龙</span>
         </h1>
 
         {/* Description */}

@@ -4,8 +4,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "我的名字 - 个人网站",
-  description: "一个使用 Next.js 和 Notion 构建的个人网站",
+  title: "袁梦龙 - 个人网站",
+  description: "袁梦龙的个人网站，使用 Next.js 和 Notion 构建",
 };
 
 export default function RootLayout({

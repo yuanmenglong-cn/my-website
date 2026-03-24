@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/Button";
 export const revalidate = 86400; // 24 小时重新验证
 
 export const metadata = {
-  title: "作品集 - 我的名字",
-  description: "展示我的项目和作品",
+  title: "作品集 - 袁梦龙",
+  description: "袁梦龙的项目和作品展示",
 };
 
 function ProjectCard({ project }: { project: Project }) {

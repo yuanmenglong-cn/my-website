@@ -1,8 +1,8 @@
 export const revalidate = 86400; // 24 小时重新验证
 
 export const metadata = {
-  title: "关于我 - 我的名字",
-  description: "了解更多关于我的信息",
+  title: "关于我 - 袁梦龙",
+  description: "了解更多关于袁梦龙的信息",
 };
 
 const skills = [
@@ -35,7 +35,7 @@ export default function AboutPage() {
           <h2 className="mb-4 text-xl font-bold text-gray-900">简介</h2>
           <div className="space-y-4 text-gray-600 leading-relaxed">
             <p>
-              你好！我是一名热爱技术的开发者。我喜欢探索新技术，构建有用的产品，
+              你好！我是袁梦龙，一名热爱技术的开发者。我喜欢探索新技术，构建有用的产品，
               并与社区分享我的学习经验。
             </p>
             <p>
@@ -71,10 +71,10 @@ export default function AboutPage() {
               <li>
                 📧 邮箱:{" "}
                 <a
-                  href="mailto:hello@example.com"
+                  href="mailto:309353978@qq.com"
                   className="text-blue-600 hover:underline"
                 >
-                  hello@example.com
+                  309353978@qq.com
                 </a>
               </li>
               <li>
@@ -85,18 +85,18 @@ export default function AboutPage() {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  @myusername
+                  @menglongyuan
                 </a>
               </li>
               <li>
                 🐦 Twitter:{" "}
                 <a
-                  href="https://twitter.com"
+                  href="https://twitter.com/yuan_menglong"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  @myusername
+                  @yuan_menglong
                 </a>
               </li>
             </ul>

@@ -4,8 +4,8 @@ import { PostCard } from "@/components/blog/PostCard";
 export const revalidate = 3600; // 1 小时重新验证
 
 export const metadata = {
-  title: "博客 - 我的名字",
-  description: "分享技术文章、项目经验和生活感悟",
+  title: "博客 - 袁梦龙",
+  description: "袁梦龙的技术博客，分享技术文章、项目经验和生活感悟",
 };
 
 export default async function BlogPage() {

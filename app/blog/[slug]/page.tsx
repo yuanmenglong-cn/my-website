@@ -31,7 +31,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} - 我的名字`,
+    title: `${post.title} - 袁梦龙`,
     description: post.excerpt,
   };
 }

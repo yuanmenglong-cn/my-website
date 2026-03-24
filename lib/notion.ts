@@ -1,32 +1,31 @@
-import { Client } from "@notionhq/client";
 import type { BlogPost, Project, NotionBlock } from "@/types";
 
-// 初始化 Notion 客户端
-const notion = new Client({
-  auth: process.env.NOTION_TOKEN,
-});
-
-// 类型断言以绕过 TypeScript 检查
-const notionDB = notion.databases as unknown as {
-  query: (args: {
-    database_id: string;
-    filter?: unknown;
-    sorts?: unknown[];
-  }) => Promise<{ results: unknown[] }>;
-};
-
-const notionBlocks = notion.blocks as unknown as {
-  children: {
-    list: (args: {
-      block_id: string;
-      page_size?: number;
-      start_cursor?: string;
-    }) => Promise<{ results: unknown[]; next_cursor?: string | null }>;
-  };
-};
-
+const NOTION_TOKEN = process.env.NOTION_TOKEN!;
 const BLOG_DB_ID = process.env.NOTION_BLOG_DATABASE_ID!;
 const PROJECTS_DB_ID = process.env.NOTION_PROJECTS_DATABASE_ID!;
+
+// Notion API 基础 URL
+const NOTION_API_BASE = "https://api.notion.com/v1";
+
+// 通用请求函数
+async function notionRequest(endpoint: string, options: RequestInit = {}) {
+  const response = await fetch(`${NOTION_API_BASE}${endpoint}`, {
+    ...options,
+    headers: {
+      "Authorization": `Bearer ${NOTION_TOKEN}`,
+      "Notion-Version": "2022-06-28",
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Notion API error: ${response.status} ${error}`);
+  }
+
+  return response.json();
+}
 
 // ===== 博客文章 API =====
 
@@ -35,20 +34,22 @@ const PROJECTS_DB_ID = process.env.NOTION_PROJECTS_DATABASE_ID!;
  */
 export async function getBlogPosts(): Promise<BlogPost[]> {
   try {
-    const response = await notionDB.query({
-      database_id: BLOG_DB_ID,
-      filter: {
-        property: "Status",
-        select: {
-          equals: "Published",
+    const response = await notionRequest(`/databases/${BLOG_DB_ID}/query`, {
+      method: "POST",
+      body: JSON.stringify({
+        filter: {
+          property: "Status",
+          select: {
+            equals: "Published",
+          },
         },
-      },
-      sorts: [
-        {
-          property: "Published",
-          direction: "descending",
-        },
-      ],
+        sorts: [
+          {
+            property: "Published",
+            direction: "descending",
+          },
+        ],
+      }),
     });
 
     return response.results.map((page: unknown) => parseBlogPost(page));
@@ -65,24 +66,26 @@ export async function getBlogPostBySlug(
   slug: string
 ): Promise<BlogPost | null> {
   try {
-    const response = await notionDB.query({
-      database_id: BLOG_DB_ID,
-      filter: {
-        and: [
-          {
-            property: "Slug",
-            rich_text: {
-              equals: slug,
+    const response = await notionRequest(`/databases/${BLOG_DB_ID}/query`, {
+      method: "POST",
+      body: JSON.stringify({
+        filter: {
+          and: [
+            {
+              property: "Slug",
+              rich_text: {
+                equals: slug,
+              },
             },
-          },
-          {
-            property: "Status",
-            select: {
-              equals: "Published",
+            {
+              property: "Status",
+              select: {
+                equals: "Published",
+              },
             },
-          },
-        ],
-      },
+          ],
+        },
+      }),
     });
 
     if (response.results.length === 0) {
@@ -107,11 +110,8 @@ export async function getPageBlocks(
     let cursor: string | undefined;
 
     do {
-      const response = await notionBlocks.children.list({
-        block_id: pageId,
-        page_size: 100,
-        start_cursor: cursor,
-      });
+      const query = cursor ? `?start_cursor=${cursor}&page_size=100` : "?page_size=100";
+      const response = await notionRequest(`/blocks/${pageId}/children${query}`);
 
       blocks.push(...response.results.map(parseBlock));
       cursor = response.next_cursor ?? undefined;
@@ -131,14 +131,16 @@ export async function getPageBlocks(
  */
 export async function getProjects(): Promise<Project[]> {
   try {
-    const response = await notionDB.query({
-      database_id: PROJECTS_DB_ID,
-      sorts: [
-        {
-          timestamp: "created_time",
-          direction: "descending",
-        },
-      ],
+    const response = await notionRequest(`/databases/${PROJECTS_DB_ID}/query`, {
+      method: "POST",
+      body: JSON.stringify({
+        sorts: [
+          {
+            timestamp: "created_time",
+            direction: "descending",
+          },
+        ],
+      }),
     });
 
     return response.results.map((page: unknown) => parseProject(page));
@@ -153,14 +155,16 @@ export async function getProjects(): Promise<Project[]> {
  */
 export async function getFeaturedProjects(): Promise<Project[]> {
   try {
-    const response = await notionDB.query({
-      database_id: PROJECTS_DB_ID,
-      filter: {
-        property: "Featured",
-        checkbox: {
-          equals: true,
+    const response = await notionRequest(`/databases/${PROJECTS_DB_ID}/query`, {
+      method: "POST",
+      body: JSON.stringify({
+        filter: {
+          property: "Featured",
+          checkbox: {
+            equals: true,
+          },
         },
-      },
+      }),
     });
 
     return response.results.map((page: unknown) => parseProject(page));

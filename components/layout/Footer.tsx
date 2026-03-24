@@ -6,7 +6,7 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            © {currentYear} 我的名字. All rights reserved.
+            © {currentYear} 袁梦龙. All rights reserved.
           </p>
 
           {/* Social Links */}
