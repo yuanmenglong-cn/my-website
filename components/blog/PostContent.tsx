@@ -1,5 +1,5 @@
 import type { NotionBlock } from "@/types";
-import { getPlainText, renderRichText } from "@/lib/parser";
+import { getPlainText, renderRichText, type RichTextItem } from "@/lib/parser";
 import Image from "next/image";
 
 interface PostContentProps {
@@ -23,48 +23,48 @@ function BlockRenderer({ block }: { block: NotionBlock }) {
     case "paragraph":
       return (
         <p className="mb-4 leading-relaxed text-gray-700">
-          {renderRichText((content as { rich_text: unknown }).rich_text)}
+          {renderRichText((content as { rich_text: RichTextItem[] }).rich_text)}
         </p>
       );
 
     case "heading_1":
       return (
         <h1 className="mb-4 mt-8 text-3xl font-bold text-gray-900">
-          {getPlainText((content as { rich_text: unknown }).rich_text)}
+          {getPlainText((content as { rich_text: RichTextItem[] }).rich_text)}
         </h1>
       );
 
     case "heading_2":
       return (
         <h2 className="mb-3 mt-6 text-2xl font-bold text-gray-900">
-          {getPlainText((content as { rich_text: unknown }).rich_text)}
+          {getPlainText((content as { rich_text: RichTextItem[] }).rich_text)}
         </h2>
       );
 
     case "heading_3":
       return (
         <h3 className="mb-3 mt-5 text-xl font-bold text-gray-900">
-          {getPlainText((content as { rich_text: unknown }).rich_text)}
+          {getPlainText((content as { rich_text: RichTextItem[] }).rich_text)}
         </h3>
       );
 
     case "bulleted_list_item":
       return (
         <li className="mb-1 ml-6 list-disc text-gray-700">
-          {renderRichText((content as { rich_text: unknown }).rich_text)}
+          {renderRichText((content as { rich_text: RichTextItem[] }).rich_text)}
         </li>
       );
 
     case "numbered_list_item":
       return (
         <li className="mb-1 ml-6 list-decimal text-gray-700">
-          {renderRichText((content as { rich_text: unknown }).rich_text)}
+          {renderRichText((content as { rich_text: RichTextItem[] }).rich_text)}
         </li>
       );
 
     case "code":
       const codeContent = content as {
-        rich_text: unknown;
+        rich_text: RichTextItem[];
         language?: string;
       };
       return (
@@ -83,7 +83,7 @@ function BlockRenderer({ block }: { block: NotionBlock }) {
     case "quote":
       return (
         <blockquote className="mb-4 border-l-4 border-blue-500 pl-4 italic text-gray-600">
-          {renderRichText((content as { rich_text: unknown }).rich_text)}
+          {renderRichText((content as { rich_text: RichTextItem[] }).rich_text)}
         </blockquote>
       );
 
@@ -92,7 +92,7 @@ function BlockRenderer({ block }: { block: NotionBlock }) {
 
     case "callout":
       const calloutContent = content as {
-        rich_text: unknown;
+        rich_text: RichTextItem[];
         icon?: { emoji?: string };
       };
       return (
@@ -108,7 +108,7 @@ function BlockRenderer({ block }: { block: NotionBlock }) {
       const imageContent = content as {
         file?: { url: string };
         external?: { url: string };
-        caption?: unknown;
+        caption?: RichTextItem[];
       };
       const imageUrl =
         imageContent.file?.url ?? imageContent.external?.url ?? "";
@@ -116,7 +116,7 @@ function BlockRenderer({ block }: { block: NotionBlock }) {
         <figure className="mb-6">
           <Image
             src={imageUrl}
-            alt={getPlainText(imageContent.caption)}
+            alt={getPlainText(imageContent.caption ?? [])}
             width={800}
             height={450}
             className="rounded-xl"

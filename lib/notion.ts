@@ -1,10 +1,10 @@
 import { Client } from "@notionhq/client";
 import type { BlogPost, Project, NotionBlock } from "@/types";
 
-// 初始化 Notion 客户端
+// 初始化 Notion客户端
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
-});
+}) as any;
 
 const BLOG_DB_ID = process.env.NOTION_BLOG_DATABASE_ID!;
 const PROJECTS_DB_ID = process.env.NOTION_PROJECTS_DATABASE_ID!;
@@ -15,23 +15,28 @@ const PROJECTS_DB_ID = process.env.NOTION_PROJECTS_DATABASE_ID!;
  * 获取所有已发布的博客文章
  */
 export async function getBlogPosts(): Promise<BlogPost[]> {
-  const response = await notion.databases.query({
-    database_id: BLOG_DB_ID,
-    filter: {
-      property: "Status",
-      select: {
-        equals: "Published",
+  try {
+    const response = await notion.databases.query({
+      database_id: BLOG_DB_ID,
+      filter: {
+        property: "Status",
+        select: {
+          equals: "Published",
+        },
       },
-    },
-    sorts: [
-      {
-        property: "Published",
-        direction: "descending",
-      },
-    ],
-  });
+      sorts: [
+        {
+          property: "Published",
+          direction: "descending",
+        },
+      ],
+    });
 
-  return response.results.map((page: unknown) => parseBlogPost(page));
+    return response.results.map((page: unknown) => parseBlogPost(page));
+  } catch (error) {
+    console.error("Error fetching blog posts:", error);
+    return [];
+  }
 }
 
 /**
@@ -40,31 +45,36 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 export async function getBlogPostBySlug(
   slug: string
 ): Promise<BlogPost | null> {
-  const response = await notion.databases.query({
-    database_id: BLOG_DB_ID,
-    filter: {
-      and: [
-        {
-          property: "Slug",
-          rich_text: {
-            equals: slug,
+  try {
+    const response = await notion.databases.query({
+      database_id: BLOG_DB_ID,
+      filter: {
+        and: [
+          {
+            property: "Slug",
+            rich_text: {
+              equals: slug,
+            },
           },
-        },
-        {
-          property: "Status",
-          select: {
-            equals: "Published",
+          {
+            property: "Status",
+            select: {
+              equals: "Published",
+            },
           },
-        },
-      ],
-    },
-  });
+        ],
+      },
+    });
 
-  if (response.results.length === 0) {
+    if (response.results.length === 0) {
+      return null;
+    }
+
+    return parseBlogPost(response.results[0]);
+  } catch (error) {
+    console.error("Error fetching blog post:", error);
     return null;
   }
-
-  return parseBlogPost(response.results[0]);
 }
 
 /**
@@ -73,22 +83,27 @@ export async function getBlogPostBySlug(
 export async function getPageBlocks(
   pageId: string
 ): Promise<NotionBlock[]> {
-  const blocks: NotionBlock[] = [];
-  let cursor: string | undefined;
+  try {
+    const blocks: NotionBlock[] = [];
+    let cursor: string | undefined;
 
-  do {
-    const response: unknown = await notion.blocks.children.list({
-      block_id: pageId,
-      page_size: 100,
-      start_cursor: cursor,
-    });
+    do {
+      const response: unknown = await notion.blocks.children.list({
+        block_id: pageId,
+        page_size: 100,
+        start_cursor: cursor,
+      });
 
-    const typedResponse = response as { results: unknown[]; next_cursor?: string };
-    blocks.push(...typedResponse.results.map(parseBlock));
-    cursor = typedResponse.next_cursor;
-  } while (cursor);
+      const typedResponse = response as { results: unknown[]; next_cursor?: string };
+      blocks.push(...typedResponse.results.map(parseBlock));
+      cursor = typedResponse.next_cursor;
+    } while (cursor);
 
-  return blocks;
+    return blocks;
+  } catch (error) {
+    console.error("Error fetching page blocks:", error);
+    return [];
+  }
 }
 
 // ===== 项目 API =====
@@ -97,34 +112,44 @@ export async function getPageBlocks(
  * 获取所有项目
  */
 export async function getProjects(): Promise<Project[]> {
-  const response = await notion.databases.query({
-    database_id: PROJECTS_DB_ID,
-    sorts: [
-      {
-        timestamp: "created_time",
-        direction: "descending",
-      },
-    ],
-  });
+  try {
+    const response = await notion.databases.query({
+      database_id: PROJECTS_DB_ID,
+      sorts: [
+        {
+          timestamp: "created_time",
+          direction: "descending",
+        },
+      ],
+    });
 
-  return response.results.map((page: unknown) => parseProject(page));
+    return response.results.map((page: unknown) => parseProject(page));
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return [];
+  }
 }
 
 /**
  * 获取精选项目（首页展示）
  */
 export async function getFeaturedProjects(): Promise<Project[]> {
-  const response = await notion.databases.query({
-    database_id: PROJECTS_DB_ID,
-    filter: {
-      property: "Featured",
-      checkbox: {
-        equals: true,
+  try {
+    const response = await notion.databases.query({
+      database_id: PROJECTS_DB_ID,
+      filter: {
+        property: "Featured",
+        checkbox: {
+          equals: true,
+        },
       },
-    },
-  });
+    });
 
-  return response.results.map((page: unknown) => parseProject(page));
+    return response.results.map((page: unknown) => parseProject(page));
+  } catch (error) {
+    console.error("Error fetching featured projects:", error);
+    return [];
+  }
 }
 
 // ===== 数据解析函数 =====

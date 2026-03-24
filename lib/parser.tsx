@@ -1,30 +1,33 @@
+import React from "react";
+
+/**
+ * 富文本项类型
+ */
+export interface RichTextItem {
+  plain_text: string;
+  type: string;
+  annotations?: {
+    bold?: boolean;
+    italic?: boolean;
+    code?: boolean;
+    strikethrough?: boolean;
+    underline?: boolean;
+    color?: string;
+  };
+  href?: string | null;
+}
+
 /**
  * 从 Notion 富文本对象中提取纯文本
  */
-export function getPlainText(
-  richText: Array<{ plain_text: string; type: string }>
-): string {
+export function getPlainText(richText: RichTextItem[]): string {
   return richText?.map((t) => t.plain_text).join("") ?? "";
 }
 
 /**
  * 渲染富文本（支持基础样式）
  */
-export function renderRichText(
-  richText: Array<{
-    plain_text: string;
-    type: string;
-    annotations?: {
-      bold?: boolean;
-      italic?: boolean;
-      code?: boolean;
-      strikethrough?: boolean;
-      underline?: boolean;
-      color?: string;
-    };
-    href?: string | null;
-  }>
-): React.ReactNode {
+export function renderRichText(richText: RichTextItem[]): React.ReactNode {
   if (!richText || richText.length === 0) {
     return null;
   }
