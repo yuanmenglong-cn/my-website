@@ -7,52 +7,43 @@ import { Button } from "@/components/ui/Button";
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:shadow-md">
-      <div className="aspect-[16/9] overflow-hidden bg-gray-100">
-        {project.cover ? (
-          <Image
-            src={project.cover}
-            alt={project.title}
-            width={600}
-            height={340}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100">
-            <span className="text-4xl">🚀</span>
-          </div>
-        )}
-      </div>
-
-      <div className="p-5">
-        <div className="mb-3 flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
-              {tag}
-            </Badge>
-          ))}
+    <Link href={`/projects/${project.slug}`} className="group block">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:shadow-md">
+        <div className="aspect-[16/9] overflow-hidden bg-gray-100">
+          {project.cover ? (
+            <Image
+              src={project.cover}
+              alt={project.title}
+              width={600}
+              height={340}
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100">
+              <span className="text-4xl">🚀</span>
+            </div>
+          )}
         </div>
 
-        <h3 className="mb-2 text-lg font-bold text-gray-900">
-          {project.title}
-        </h3>
+        <div className="p-5">
+          <div className="mb-3 flex flex-wrap gap-2">
+            {project.tags.map((tag) => (
+              <Badge key={tag} variant="secondary">
+                {tag}
+              </Badge>
+            ))}
+          </div>
 
-        <p className="mb-4 text-sm text-gray-600 line-clamp-2">
-          {project.description}
-        </p>
+          <h3 className="mb-2 text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+            {project.title}
+          </h3>
 
-        {project.link && (
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-blue-600 hover:underline"
-          >
-            访问项目 →
-          </a>
-        )}
+          <p className="text-sm text-gray-600 line-clamp-2">
+            {project.description}
+          </p>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
