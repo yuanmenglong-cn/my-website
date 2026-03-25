@@ -113,7 +113,21 @@ export async function getPageBlocks(
       const query = cursor ? `?start_cursor=${cursor}&page_size=100` : "?page_size=100";
       const response = await notionRequest(`/blocks/${pageId}/children${query}`);
 
-      blocks.push(...response.results.map(parseBlock));
+      const parsedBlocks = await Promise.all(
+        response.results.map(async (block: unknown) => {
+          const parsed = parseBlock(block);
+          const typedBlock = block as { type: string; id: string; has_children?: boolean };
+
+          // 递归获取子块（表格行等）
+          if (typedBlock.has_children) {
+            parsed.children = await getPageBlocks(typedBlock.id);
+          }
+
+          return parsed;
+        })
+      );
+
+      blocks.push(...parsedBlocks);
       cursor = response.next_cursor ?? undefined;
     } while (cursor);
 
@@ -171,6 +185,36 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   } catch (error) {
     console.error("Error fetching featured projects:", error);
     return [];
+  }
+}
+
+/**
+ * 根据 slug 获取单个项目
+ */
+export async function getProjectBySlug(
+  slug: string
+): Promise<Project | null> {
+  try {
+    const response = await notionRequest(`/databases/${PROJECTS_DB_ID}/query`, {
+      method: "POST",
+      body: JSON.stringify({
+        filter: {
+          property: "Slug",
+          rich_text: {
+            equals: slug,
+          },
+        },
+      }),
+    });
+
+    if (response.results.length === 0) {
+      return null;
+    }
+
+    return parseProject(response.results[0]);
+  } catch (error) {
+    console.error("Error fetching project:", error);
+    return null;
   }
 }
 

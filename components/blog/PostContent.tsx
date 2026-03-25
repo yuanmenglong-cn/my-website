@@ -129,7 +129,80 @@ function BlockRenderer({ block }: { block: NotionBlock }) {
         </figure>
       );
 
+    case "table":
+      return <TableRenderer block={block} />;
+
     default:
       return null;
   }
+}
+
+interface TableRowContent {
+  cells: RichTextItem[][];
+}
+
+interface TableContent {
+  table_width: number;
+  has_column_header?: boolean;
+  has_row_header?: boolean;
+}
+
+function TableRenderer({ block }: { block: NotionBlock }) {
+  const { children } = block;
+  const content = block.content as TableContent | undefined;
+
+  if (!children || children.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="my-6 overflow-x-auto">
+      <table className="w-full border-collapse border border-gray-300">
+        <tbody>
+          {children.map((row, rowIndex) => (
+            <TableRowRenderer
+              key={row.id}
+              row={row}
+              rowIndex={rowIndex}
+              hasColumnHeader={content?.has_column_header ?? false}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function TableRowRenderer({
+  row,
+  rowIndex,
+  hasColumnHeader,
+}: {
+  row: NotionBlock;
+  rowIndex: number;
+  hasColumnHeader: boolean;
+}) {
+  const content = row.content as TableRowContent | undefined;
+  const cells = content?.cells ?? [];
+  const isHeaderRow = hasColumnHeader && rowIndex === 0;
+
+  return (
+    <tr className={isHeaderRow ? "bg-gray-100" : ""}>
+      {cells.map((cell, cellIndex) => {
+        const CellTag = isHeaderRow ? "th" : "td";
+        const isRowHeader = !isHeaderRow && cellIndex === 0;
+
+        return (
+          <CellTag
+            key={cellIndex}
+            className={`border border-gray-300 px-4 py-2 text-left ${
+              isRowHeader ? "bg-gray-50 font-semibold" : ""
+            }`}
+          >
+            {renderRichText(cell)}
+          </CellTag>
+        );
+      })}
+    </tr>
+  );
 }

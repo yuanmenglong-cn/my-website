@@ -47,7 +47,9 @@ export type NotionBlockType =
   | "image"
   | "quote"
   | "divider"
-  | "callout";
+  | "callout"
+  | "table"
+  | "table_row";
 
 export interface NotionBlock {
   id: string;
