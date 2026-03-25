@@ -12,7 +12,7 @@ export function Footer() {
           {/* Social Links */}
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com"
+              href="https://github.com/yuanmenglong-cn"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -23,7 +23,7 @@ export function Footer() {
               </svg>
             </a>
             <a
-              href="https://twitter.com"
+              href="https://x.com/yuan_menglong"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-600 transition-colors"

@@ -80,18 +80,18 @@ export default function AboutPage() {
               <li>
                 🐙 GitHub:{" "}
                 <a
-                  href="https://github.com"
+                  href="https://github.com/yuanmenglong-cn"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  @menglongyuan
+                  @yuanmenglong-cn
                 </a>
               </li>
               <li>
                 🐦 Twitter:{" "}
                 <a
-                  href="https://twitter.com/yuan_menglong"
+                  href="https://x.com/yuan_menglong"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
