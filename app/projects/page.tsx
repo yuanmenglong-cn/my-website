@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 
-export const revalidate = 86400;
+export const revalidate = 300; // 5分钟重新验证
 
 export const metadata = {
   title: "作品集 - 袁梦龙",
