@@ -132,6 +132,23 @@ function BlockRenderer({ block }: { block: NotionBlock }) {
     case "table":
       return <TableRenderer block={block} />;
 
+    case "pdf":
+      const pdfContent = content as {
+        file?: { url: string };
+        external?: { url: string };
+      };
+      const pdfUrl = pdfContent.file?.url ?? pdfContent.external?.url ?? "";
+      if (!pdfUrl) return null;
+      return (
+        <div className="my-6">
+          <iframe
+            src={pdfUrl}
+            className="w-full h-[600px] rounded-xl border border-gray-200"
+            title="PDF Viewer"
+          />
+        </div>
+      );
+
     default:
       return null;
   }

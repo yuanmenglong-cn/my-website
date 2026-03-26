@@ -49,7 +49,8 @@ export type NotionBlockType =
   | "divider"
   | "callout"
   | "table"
-  | "table_row";
+  | "table_row"
+  | "pdf";
 
 export interface NotionBlock {
   id: string;
