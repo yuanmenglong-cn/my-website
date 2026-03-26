@@ -1,0 +1,76 @@
+# Blog API 测试命令
+# 注意：需要在 .env.local 中设置 API_SECRET_KEY=your-secret-key
+
+## 1. 创建博客文章（完整参数）
+curl -X POST http://localhost:3000/api/blog \
+  -H "Authorization: Bearer test-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "测试文章",
+    "slug": "test-post-2026",
+    "excerpt": "这是一篇测试文章的摘要",
+    "tags": ["测试", "API"],
+    "content": "# 测试标题\n\n这是正文内容。\n\n## 二级标题\n\n更多内容在这里。"
+  }'
+
+## 2. 创建博客文章（带封面图）
+curl -X POST http://localhost:3000/api/blog \
+  -H "Authorization: Bearer test-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "带封面的文章",
+    "slug": "post-with-cover",
+    "excerpt": "这篇文章有封面图",
+    "tags": ["测试", "封面"],
+    "content": "# 带封面的文章\n\n内容在这里。",
+    "cover": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800"
+  }'
+
+## 3. 创建博客文章（缺少 API Key - 测试认证失败）
+curl -X POST http://localhost:3000/api/blog \
+  -H "Content-Type: application/json" \
+  -d '{"title": "测试"}'
+
+## 4. 创建博客文章（缺少必填字段 - 测试错误处理）
+curl -X POST http://localhost:3000/api/blog \
+  -H "Authorization: Bearer test-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "只有标题"}'
+
+
+# Projects API 测试命令
+
+## 5. 创建项目（完整参数）
+curl -X POST http://localhost:3000/api/projects \
+  -H "Authorization: Bearer test-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "测试项目",
+    "slug": "test-project",
+    "description": "这是一个测试项目的描述",
+    "tags": ["React", "Next.js", "TypeScript"],
+    "link": "https://github.com/test/project",
+    "featured": true
+  }'
+
+## 6. 创建项目（最小化参数）
+curl -X POST http://localhost:3000/api/projects \
+  -H "Authorization: Bearer test-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "最小项目",
+    "slug": "minimal-project",
+    "description": "最简单的项目",
+    "tags": ["测试"]
+  }'
+
+## 7. 创建项目（缺少 API Key - 测试认证失败）
+curl -X POST http://localhost:3000/api/projects \
+  -H "Content-Type: application/json" \
+  -d '{"title": "测试"}'
+
+## 8. 创建项目（缺少必填字段 - 测试错误处理）
+curl -X POST http://localhost:3000/api/projects \
+  -H "Authorization: Bearer test-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "只有标题"}'

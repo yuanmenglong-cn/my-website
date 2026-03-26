@@ -289,3 +289,228 @@ function parseBlock(block: unknown): NotionBlock {
     content: typed[typed.type],
   };
 }
+
+// ===== 创建项目 API =====
+
+export interface CreateProjectInput {
+  title: string;
+  slug: string;
+  description: string;
+  tags: string[];
+  link?: string | null;
+  cover?: string | null;
+  featured?: boolean;
+}
+
+/**
+ * 创建新的项目
+ */
+export async function createProject(input: CreateProjectInput): Promise<Project> {
+  const { title, slug, description, tags, link, cover, featured = false } = input;
+
+  try {
+    // 创建页面（数据库条目）
+    const pageData: Record<string, unknown> = {
+      parent: {
+        database_id: PROJECTS_DB_ID,
+      },
+      properties: {
+        Title: {
+          title: [
+            {
+              text: {
+                content: title,
+              },
+            },
+          ],
+        },
+        Slug: {
+          rich_text: [
+            {
+              text: {
+                content: slug,
+              },
+            },
+          ],
+        },
+        Description: {
+          rich_text: [
+            {
+              text: {
+                content: description,
+              },
+            },
+          ],
+        },
+        Tags: {
+          multi_select: tags.map((tag) => ({ name: tag })),
+        },
+        Featured: {
+          checkbox: featured,
+        },
+      },
+    };
+
+    // 如果有链接，添加 Link
+    if (link) {
+      (pageData.properties as Record<string, unknown>).Link = {
+        url: link,
+      };
+    }
+
+    // 如果有封面图，添加 cover
+    if (cover) {
+      pageData.cover = {
+        external: {
+          url: cover,
+        },
+      };
+    }
+
+    const page = await notionRequest("/pages", {
+      method: "POST",
+      body: JSON.stringify(pageData),
+    });
+
+    // 返回新创建的项目
+    return parseProject(page);
+  } catch (error) {
+    console.error("Error creating project:", error);
+    throw error;
+  }
+}
+
+export interface CreateBlogPostInput {
+  title: string;
+  slug: string;
+  excerpt: string;
+  tags: string[];
+  content: string;
+  cover?: string | null;
+}
+
+/**
+ * 创建新的博客文章
+ */
+export async function createBlogPost(input: CreateBlogPostInput): Promise<BlogPost> {
+  const { title, slug, excerpt, tags, content, cover } = input;
+
+  // 获取当前时间作为发布时间
+  const publishedAt = new Date().toISOString().split('T')[0]; // YYYY-MM-DD 格式
+
+  try {
+    // 1. 创建页面（数据库条目）
+    const pageData: Record<string, unknown> = {
+      parent: {
+        database_id: BLOG_DB_ID,
+      },
+      properties: {
+        Title: {
+          title: [
+            {
+              text: {
+                content: title,
+              },
+            },
+          ],
+        },
+        Slug: {
+          rich_text: [
+            {
+              text: {
+                content: slug,
+              },
+            },
+          ],
+        },
+        Excerpt: {
+          rich_text: [
+            {
+              text: {
+                content: excerpt,
+              },
+            },
+          ],
+        },
+        Published: {
+          date: {
+            start: publishedAt,
+          },
+        },
+        Tags: {
+          multi_select: tags.map((tag) => ({ name: tag })),
+        },
+        Status: {
+          select: {
+            name: "Published",
+          },
+        },
+      },
+    };
+
+    // 如果有封面图，添加 cover
+    if (cover) {
+      pageData.cover = {
+        external: {
+          url: cover,
+        },
+      };
+    }
+
+    const page = await notionRequest("/pages", {
+      method: "POST",
+      body: JSON.stringify(pageData),
+    });
+
+    // 2. 添加正文内容块
+    await addPageContent(page.id, content);
+
+    // 3. 返回新创建的文章
+    return parseBlogPost(page);
+  } catch (error) {
+    console.error("Error creating blog post:", error);
+    throw error;
+  }
+}
+
+/**
+ * 将 Markdown 内容转换为 Notion 块并添加到页面
+ */
+async function addPageContent(pageId: string, content: string): Promise<void> {
+  // 简单解析：按段落分割
+  const paragraphs = content.split('\n\n').filter((p) => p.trim());
+
+  const blocks = paragraphs.map((paragraph) => {
+    // 检查是否是标题（以 # 开头）
+    const headingMatch = paragraph.match(/^(#{1,3})\s+(.+)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const text = headingMatch[2];
+      const blockType = level === 1 ? "heading_1" : level === 2 ? "heading_2" : "heading_3";
+      return {
+        type: blockType,
+        [blockType]: {
+          rich_text: [{ text: { content: text } }],
+        },
+      };
+    }
+
+    // 普通段落
+    return {
+      type: "paragraph",
+      paragraph: {
+        rich_text: [{ text: { content: paragraph } }],
+      },
+    };
+  });
+
+  // Notion API 每次最多添加 100 个块
+  const chunkSize = 100;
+  for (let i = 0; i < blocks.length; i += chunkSize) {
+    const chunk = blocks.slice(i, i + chunkSize);
+    await notionRequest(`/blocks/${pageId}/children`, {
+      method: "PATCH",
+      body: JSON.stringify({ children: chunk }),
+    });
+  }
+}
