@@ -1,11 +1,12 @@
 import { type NextRequest } from "next/server";
 import { createBlogPost, type CreateBlogPostInput } from "@/lib/notion";
 
-const API_SECRET_KEY = process.env.API_SECRET_KEY;
-
 function verifyAuth(request: NextRequest): boolean {
+  const API_SECRET_KEY = process.env.API_SECRET_KEY;
+
   // 如果没有配置 API_SECRET_KEY，拒绝所有请求（安全默认）
   if (!API_SECRET_KEY) {
+    console.error("API_SECRET_KEY not configured");
     return false;
   }
 
