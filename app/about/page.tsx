@@ -25,15 +25,15 @@ export default function AboutPage() {
               👨‍💻
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h1 className="text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
             关于我
           </h1>
         </div>
 
         {/* Bio */}
         <section className="mb-12">
-          <h2 className="mb-4 text-xl font-bold text-gray-900">简介</h2>
-          <div className="space-y-4 text-gray-600 leading-relaxed">
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">简介</h2>
+          <div className="space-y-4 text-gray-600 leading-relaxed dark:text-gray-400">
             <p>
               你好！我是袁梦龙，一名热爱技术的开发者。我喜欢探索新技术，构建有用的产品，
               并与社区分享我的学习经验。
@@ -47,12 +47,12 @@ export default function AboutPage() {
 
         {/* Skills */}
         <section className="mb-12">
-          <h2 className="mb-4 text-xl font-bold text-gray-900">技术栈</h2>
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">技术栈</h2>
           <div className="flex flex-wrap gap-3">
             {skills.map((skill) => (
               <span
                 key={skill}
-                className="rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700"
+                className="rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
               >
                 {skill}
               </span>
@@ -62,17 +62,17 @@ export default function AboutPage() {
 
         {/* Contact */}
         <section>
-          <h2 className="mb-4 text-xl font-bold text-gray-900">联系方式</h2>
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">联系方式</h2>
           <div className="space-y-3">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               欢迎通过以下方式与我联系：
             </p>
-            <ul className="space-y-2 text-gray-600">
+            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
               <li>
                 📧 邮箱:{" "}
                 <a
                   href="mailto:309353978@qq.com"
-                  className="text-blue-600 hover:underline"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
                 >
                   309353978@qq.com
                 </a>
@@ -83,7 +83,7 @@ export default function AboutPage() {
                   href="https://github.com/yuanmenglong-cn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
                 >
                   @yuanmenglong-cn
                 </a>
@@ -94,7 +94,7 @@ export default function AboutPage() {
                   href="https://x.com/yuan_menglong"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
                 >
                   @yuan_menglong
                 </a>

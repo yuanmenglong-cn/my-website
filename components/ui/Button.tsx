@@ -21,7 +21,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           variant === "secondary" &&
             "bg-purple-500 text-white hover:bg-purple-600",
           variant === "outline" &&
-            "border-2 border-gray-300 bg-transparent hover:bg-gray-100",
+            "border-2 border-gray-300 bg-transparent hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800",
           // 尺寸样式
           size === "sm" && "h-9 px-4 text-sm",
           size === "md" && "h-11 px-6 text-base",

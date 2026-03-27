@@ -14,9 +14,9 @@ export const metadata = {
 function ProjectCard({ project }: { project: Project }) {
   return (
     <Link href={`/projects/${project.slug}`} className="group block">
-      <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:bg-gray-900 dark:border dark:border-gray-700">
         {/* Cover */}
-        <div className="aspect-[16/9] overflow-hidden bg-gray-100">
+        <div className="aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800">
           {project.cover ? (
             <Image
               src={project.cover}
@@ -26,7 +26,7 @@ function ProjectCard({ project }: { project: Project }) {
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100">
+            <div className="flex h-full items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30">
               <span className="text-4xl">🚀</span>
             </div>
           )}
@@ -46,12 +46,12 @@ function ProjectCard({ project }: { project: Project }) {
           )}
 
           {/* Title */}
-          <h3 className="mb-2 text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+          <h3 className="mb-2 text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors dark:text-gray-100 dark:group-hover:text-blue-400">
             {project.title}
           </h3>
 
           {/* Description */}
-          <p className="text-gray-600 line-clamp-2">{project.description}</p>
+          <p className="text-gray-600 line-clamp-2 dark:text-gray-400">{project.description}</p>
         </div>
       </div>
     </Link>
@@ -66,10 +66,10 @@ export default async function ProjectsPage() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h1 className="text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
             作品集
           </h1>
-          <p className="mt-3 text-gray-600">展示我的项目和作品</p>
+          <p className="mt-3 text-gray-600 dark:text-gray-400">展示我的项目和作品</p>
         </div>
 
         {/* Projects Grid */}
@@ -81,7 +81,7 @@ export default async function ProjectsPage() {
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-gray-500">暂无项目，敬请期待...</p>
+            <p className="text-gray-500 dark:text-gray-400">暂无项目，敬请期待...</p>
           </div>
         )}
       </div>

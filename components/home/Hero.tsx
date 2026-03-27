@@ -13,12 +13,12 @@ export function Hero() {
         </div>
 
         {/* Title */}
-        <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-          你好，我是<span className="text-blue-600">袁梦龙</span>
+        <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl dark:text-gray-100">
+          你好，我是<span className="text-blue-600 dark:text-blue-400">袁梦龙</span>
         </h1>
 
         {/* Description */}
-        <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
           一个热爱技术与创作的开发者。在这里分享我的项目、文章和对技术的思考。
         </p>
 

@@ -57,7 +57,7 @@ export default async function ProjectPage({
         {/* Back Link */}
         <Link
           href="/projects"
-          className="mb-6 inline-flex items-center text-sm text-gray-500 hover:text-blue-600"
+          className="mb-6 inline-flex items-center text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
         >
           ← 返回作品集
         </Link>
@@ -76,12 +76,12 @@ export default async function ProjectPage({
           )}
 
           {/* Title */}
-          <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
             {project.title}
           </h1>
 
           {/* Description */}
-          <p className="text-lg text-gray-600">{project.description}</p>
+          <p className="text-lg text-gray-600 dark:text-gray-400">{project.description}</p>
 
           {/* External Link */}
           {project.link && (
@@ -117,10 +117,10 @@ export default async function ProjectPage({
         <PostContent blocks={blocks} />
 
         {/* Footer */}
-        <footer className="mt-12 border-t pt-8">
+        <footer className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
           <Link
             href="/projects"
-            className="inline-flex items-center text-blue-600 hover:underline"
+            className="inline-flex items-center text-blue-600 hover:underline dark:text-blue-400"
           >
             ← 返回作品集
           </Link>

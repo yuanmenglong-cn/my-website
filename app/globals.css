@@ -9,6 +9,11 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* 暗色模式基础样式 */
+  html.dark {
+    color-scheme: dark;
+  }
 }
 
 @layer utilities {

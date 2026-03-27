@@ -14,8 +14,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
-      <body className="min-h-screen bg-gray-50 font-sans antialiased flex flex-col">
+    <html lang="zh-CN" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  document.documentElement.classList.add('dark');
+                }
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                  if (e.matches) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                });
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-screen bg-gray-50 font-sans antialiased flex flex-col dark:bg-gray-900 dark:text-gray-100">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

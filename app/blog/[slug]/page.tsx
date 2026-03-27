@@ -56,7 +56,7 @@ export default async function BlogPostPage({
         {/* Back Link */}
         <Link
           href="/blog"
-          className="mb-6 inline-flex items-center text-sm text-gray-500 hover:text-blue-600"
+          className="mb-6 inline-flex items-center text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
         >
           ← 返回博客列表
         </Link>
@@ -75,12 +75,12 @@ export default async function BlogPostPage({
           )}
 
           {/* Title */}
-          <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
             {post.title}
           </h1>
 
           {/* Date */}
-          <time className="text-gray-500">
+          <time className="text-gray-500 dark:text-gray-400">
             {new Date(post.publishedAt).toLocaleDateString("zh-CN", {
               year: "numeric",
               month: "long",
@@ -107,10 +107,10 @@ export default async function BlogPostPage({
         <PostContent blocks={blocks} />
 
         {/* Footer */}
-        <footer className="mt-12 border-t pt-8">
+        <footer className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
           <Link
             href="/blog"
-            className="inline-flex items-center text-blue-600 hover:underline"
+            className="inline-flex items-center text-blue-600 hover:underline dark:text-blue-400"
           >
             ← 返回博客列表
           </Link>

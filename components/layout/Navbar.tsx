@@ -9,12 +9,12 @@ const navLinks = [
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/80">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href="/"
-          className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+          className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors dark:text-gray-100"
         >
           袁梦龙
         </Link>
@@ -25,7 +25,7 @@ export function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors dark:text-gray-400 dark:hover:text-blue-400"
               >
                 {link.label}
               </Link>
@@ -34,7 +34,7 @@ export function Navbar() {
         </ul>
 
         {/* Mobile Menu Button - 简化版，无交互 */}
-        <button className="md:hidden p-2 text-gray-600">
+        <button className="md:hidden p-2 text-gray-600 dark:text-gray-400">
           <svg
             className="w-6 h-6"
             fill="none"

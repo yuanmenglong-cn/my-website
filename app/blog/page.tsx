@@ -16,10 +16,10 @@ export default async function BlogPage() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h1 className="text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
             博客文章
           </h1>
-          <p className="mt-3 text-gray-600">
+          <p className="mt-3 text-gray-600 dark:text-gray-400">
             分享技术文章、项目经验和生活感悟
           </p>
         </div>
@@ -33,7 +33,7 @@ export default async function BlogPage() {
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-gray-500">暂无文章，敬请期待...</p>
+            <p className="text-gray-500 dark:text-gray-400">暂无文章，敬请期待...</p>
           </div>
         )}
       </div>

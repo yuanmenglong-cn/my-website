@@ -10,9 +10,9 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
-      <article className="h-full overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+      <article className="h-full overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-gray-900 dark:border dark:border-gray-700">
         {/* Cover Image */}
-        <div className="aspect-[16/9] overflow-hidden bg-gray-100">
+        <div className="aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800">
           {post.cover ? (
             <Image
               src={post.cover}
@@ -22,7 +22,7 @@ export function PostCard({ post }: PostCardProps) {
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+            <div className="flex h-full items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
               <span className="text-4xl">📝</span>
             </div>
           )}
@@ -42,17 +42,17 @@ export function PostCard({ post }: PostCardProps) {
           )}
 
           {/* Title */}
-          <h3 className="mb-2 text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+          <h3 className="mb-2 text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 dark:text-gray-100 dark:group-hover:text-blue-400">
             {post.title}
           </h3>
 
           {/* Excerpt */}
-          <p className="mb-4 text-sm text-gray-600 line-clamp-2">
+          <p className="mb-4 text-sm text-gray-600 line-clamp-2 dark:text-gray-400">
             {post.excerpt}
           </p>
 
           {/* Date */}
-          <time className="text-xs text-gray-400">
+          <time className="text-xs text-gray-400 dark:text-gray-500">
             {new Date(post.publishedAt).toLocaleDateString("zh-CN", {
               year: "numeric",
               month: "long",

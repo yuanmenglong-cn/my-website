@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/Button";
 function ProjectCard({ project }: { project: Project }) {
   return (
     <Link href={`/projects/${project.slug}`} className="group block">
-      <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:shadow-md">
-        <div className="aspect-[16/9] overflow-hidden bg-gray-100">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:shadow-md dark:bg-gray-900 dark:border dark:border-gray-700">
+        <div className="aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800">
           {project.cover ? (
             <Image
               src={project.cover}
@@ -19,7 +19,7 @@ function ProjectCard({ project }: { project: Project }) {
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100">
+            <div className="flex h-full items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30">
               <span className="text-4xl">🚀</span>
             </div>
           )}
@@ -34,11 +34,11 @@ function ProjectCard({ project }: { project: Project }) {
             ))}
           </div>
 
-          <h3 className="mb-2 text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+          <h3 className="mb-2 text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors dark:text-gray-100 dark:group-hover:text-blue-400">
             {project.title}
           </h3>
 
-          <p className="text-sm text-gray-600 line-clamp-2">
+          <p className="text-sm text-gray-600 line-clamp-2 dark:text-gray-400">
             {project.description}
           </p>
         </div>
@@ -55,10 +55,10 @@ export async function FeaturedProjects() {
   }
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-12 bg-white dark:bg-gray-800">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">精选项目</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">精选项目</h2>
           <Link href="/projects">
             <Button variant="outline" size="sm">
               查看全部

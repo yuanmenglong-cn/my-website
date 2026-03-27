@@ -15,7 +15,7 @@ export async function LatestPosts() {
     <section className="py-12">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">最新文章</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">最新文章</h2>
           <Link href="/blog">
             <Button variant="outline" size="sm">
               查看全部
