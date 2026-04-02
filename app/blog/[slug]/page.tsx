@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getBlogPostBySlug, getPageBlocks, getBlogPosts } from "@/lib/notion";
 import { PostContent } from "@/components/blog/PostContent";
+import { GiscusComments } from "@/components/comments/GiscusComments";
 import { Badge } from "@/components/ui/Badge";
 import Image from "next/image";
 import Link from "next/link";
@@ -105,6 +106,9 @@ export default async function BlogPostPage({
 
         {/* Content */}
         <PostContent blocks={blocks} />
+
+        {/* Comments */}
+        <GiscusComments category="Blog" />
 
         {/* Footer */}
         <footer className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
