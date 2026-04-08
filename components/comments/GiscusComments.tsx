@@ -17,10 +17,10 @@ export function GiscusComments({ category }: GiscusCommentsProps) {
     script.crossOrigin = "anonymous";
 
     // Configuration attributes
-    script.setAttribute("data-repo", "yuenmunglung/my-website");
-    script.setAttribute("data-repo-id", "R_kgDON5lR_Q");
+    script.setAttribute("data-repo", "yuanmenglong-cn/my-website");
+    script.setAttribute("data-repo-id", "R_kgDORwJdBw");
     script.setAttribute("data-category", category);
-    script.setAttribute("data-category-id", category === "Blog" ? "DIC_kwDON5lR_c4CnQfQ" : "DIC_kwDON5lR_c4CnQfR");
+    script.setAttribute("data-category-id", category === "Blog" ? "DIC_kwDORwJdB84C6YOI" : "DIC_kwDORwJdB84C6YOV");
     script.setAttribute("data-mapping", "pathname");
     script.setAttribute("data-strict", "0");
     script.setAttribute("data-reactions-enabled", "1");
